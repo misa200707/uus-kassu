@@ -34,3 +34,38 @@ euroInput.addEventListener('input', function() {
     const euroAmount = parseFloat(euroInput.value) || 0;
     pepeOutput.innerText = calculatePepeAmount(euroAmount) + " PEPE";
 });
+async function connectWalletAndPay() {
+    if (window.solana) {
+        try {
+            // Connect to the user's wallet
+            await window.solana.connect();
+            const wallet = window.solana;
+
+            const recipient = '9tF5acx2XK2P3Rh3WGt8PhazhjNeZMtSxrBdVUvDPq4k';
+            const amount = parseFloat(document.getElementById('solAmount').value);
+
+            if (amount <= 0) {
+                alert("Enter a valid amount.");
+                return;
+            }
+
+            // Create a transaction
+            let transaction = new solanaWeb3.Transaction().add(
+                solanaWeb3.SystemProgram.transfer({
+                    fromPubkey: wallet.publicKey,
+                    toPubkey: new solanaWeb3.PublicKey(recipient),
+                    lamports: solanaWeb3.LAMPORTS_PER_SOL * amount // Convert SOL to lamports
+                })
+            );
+
+            // Send the transaction
+            let { signature } = await wallet.sendTransaction(transaction, connection);
+            alert(`Transaction successful: ${signature}`);
+        } catch (error) {
+            console.error("Payment failed", error);
+            alert('Transaction failed. Please try again.');
+        }
+    } else {
+        alert('Solana wallet not found! Please install a Solana wallet extension like Phantom.');
+    }
+}
