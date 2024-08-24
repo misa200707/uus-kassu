@@ -1,34 +1,53 @@
+/* Määrittää koko sivun taustavärin ja fontin */
 body {
+    background-color: #f0f0f0;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    text-align: center;
+    color: #333333;
     margin: 0;
     padding: 0;
 }
 
+/* Otsikon (h1) tyyli */
+h1 {
+    color: #4CAF50;
+    text-align: center;
+    padding-top: 20px;
+}
+
+/* Kappaleiden (p) tyyli */
+p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: justify;
+}
+
+/* Linkin (a) tyyli */
+a {
+    color: #1E90FF;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Ylätunnisteen (header) tyyli */
 header {
-    background-color: #444;
-    color: white;
-    padding: 1em 0;
+    background-color: #333333;
+    color: #ffffff;
+    padding: 10px 0;
+    text-align: center;
 }
 
-main {
-    margin: 2em;
-}
-
-section {
-    margin-bottom: 2em;
-}
-
-button {
-    padding: 0.5em 1em;
-    margin-top: 1em;
-    cursor: pointer;
-}
-
-input {
-    padding: 0.5em;
-    margin-top: 1em;
-    width: 100px;
+/* Alaosan (footer) tyyli */
+footer {
+    background-color: #333333;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
