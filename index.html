@@ -1,29 +1,61 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casino Noppapeli</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Solana Payment</title>
 </head>
 <body>
-    <header>
-        <h1>Casino Noppapeli</h1>
-    </header>
-    <main>
-        <section id="dice-game">
-            <h2>Pelaa Noppapeliä</h2>
-            <button id="roll-dice">Heitä noppaa</button>
-            <p id="dice-result"></p>
-        </section>
-        <section id="crypto-deposit">
-            <h2>Talleta Kryptovaluuttoja</h2>
-            <label for="crypto-amount">Määrä:</label>
-            <input type="number" id="crypto-amount" placeholder="0.00">
-            <button id="deposit-crypto">Talleta</button>
-            <p id="deposit-result"></p>
-        </section>
-    </main>
-    <script src="script.js"></script>
+    <h2>Pay with Solana (SOL)</h2>
+    <p>Enter the amount of SOL you want to pay:</p>
+    <input type="number" id="solAmount" placeholder="Amount in SOL">
+    <button onclick="sendSolanaPayment()">Send Payment</button>
+    <p id="status"></p>
+
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@latest"></script>
+    <script>
+        async function sendSolanaPayment() {
+            const recipient = '9tF5acx2XK2P3Rh3WGt8PhazhjNeZMtSxrBdVUvDPq4k';
+            const amount = document.getElementById('solAmount').value;
+            const statusElement = document.getElementById('status');
+
+            if (!amount || amount <= 0) {
+                statusElement.innerText = 'Please enter a valid amount.';
+                return;
+            }
+
+            try {
+                // Solana connection
+                const connection = new solanaWeb3.Connection(
+                    solanaWeb3.clusterApiUrl('mainnet-beta'),
+                    'confirmed'
+                );
+
+                // Generate a new keypair for the transaction (this is just for demonstration; in a real application, you'd use the user's wallet)
+                const fromWallet = solanaWeb3.Keypair.generate();
+
+                // Generate transaction
+                let transaction = new solanaWeb3.Transaction().add(
+                    solanaWeb3.SystemProgram.transfer({
+                        fromPubkey: fromWallet.publicKey,
+                        toPubkey: new solanaWeb3.PublicKey(recipient),
+                        lamports: solanaWeb3.LAMPORTS_PER_SOL * amount // Convert SOL to lamports
+                    })
+                );
+
+                // Send the transaction
+                const signature = await solanaWeb3.sendAndConfirmTransaction(
+                    connection,
+                    transaction,
+                    [fromWallet]
+                );
+
+                statusElement.innerText = `Transaction sent with signature: ${signature}`;
+            } catch (error) {
+                console.error("Transaction failed", error);
+                statusElement.innerText = 'Transaction failed. Please try again.';
+            }
+        }
+    </script>
 </body>
 </html>
