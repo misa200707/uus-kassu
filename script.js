@@ -20,3 +20,17 @@ function updateCountdown() {
 }
 
 setInterval(updateCountdown, 1000);
+// Oletetaan, että 1€ = 1200 PEPE
+const euroPerPepe = 1200;
+
+function calculatePepeAmount(euroAmount) {
+    return euroAmount * euroPerPepe;
+}
+
+const euroInput = document.getElementById('euroInput');
+const pepeOutput = document.getElementById('pepeOutput');
+
+euroInput.addEventListener('input', function() {
+    const euroAmount = parseFloat(euroInput.value) || 0;
+    pepeOutput.innerText = calculatePepeAmount(euroAmount) + " PEPE";
+});
